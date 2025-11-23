@@ -1,8 +1,9 @@
 import { readFileSync } from "fs";
 import HtmlWebpackPlugin from "html-webpack-plugin";
-import miniCssExtractPlugin from "mini-css-extract-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import path from "path";
 import { fileURLToPath } from "url";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import ModuleFederationPlugin from "webpack/lib/container/ModuleFederationPlugin.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -13,14 +14,18 @@ const packageJson = JSON.parse(
 );
 
 const deps = packageJson.dependencies;
+const isProduction = process.env.NODE_ENV === "production";
 
 export default {
   entry: "./src/index.tsx",
-  mode: "development",
-  devtool: "eval-source-map",
+  mode: isProduction ? "production" : "development",
+  devtool: isProduction ? "source-map" : "eval-source-map",
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "bundle.[contenthash].js",
+    filename: isProduction ? "[name].[contenthash].js" : "[name].js",
+    chunkFilename: isProduction
+      ? "[name].[contenthash].chunk.js"
+      : "[name].chunk.js",
     clean: true,
     publicPath: "http://localhost:3001/",
   },
@@ -37,7 +42,7 @@ export default {
       {
         test: /\.css$/i,
         use: [
-          miniCssExtractPlugin.loader,
+          isProduction ? MiniCssExtractPlugin.loader : "style-loader",
           "css-loader",
           {
             loader: "postcss-loader",
@@ -52,9 +57,14 @@ export default {
     ],
   },
   plugins: [
-    new miniCssExtractPlugin({
-      filename: "styles.[contenthash].css",
-    }),
+    ...(isProduction
+      ? [
+          new MiniCssExtractPlugin({
+            filename: "styles.[contenthash].css",
+            chunkFilename: "styles.[contenthash].chunk.css",
+          }),
+        ]
+      : []),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
@@ -65,7 +75,6 @@ export default {
         "./Dashboard": "./src/App.tsx",
       },
       shared: {
-        ...deps,
         react: {
           singleton: true,
           requiredVersion: deps.react,
@@ -81,18 +90,9 @@ export default {
           requiredVersion: deps["@repo/ui"],
           eager: false,
         },
-        postcss: {
-          singleton: true,
-          requiredVersion: deps["postcss"],
-          eager: false,
-        },
-        tailwindcss: {
-          singleton: true,
-          requiredVersion: deps["tailwindcss"],
-          eager: false,
-        },
       },
     }),
+    ...(process.env.ANALYZE ? [new BundleAnalyzerPlugin()] : []),
   ],
   devServer: {
     port: 3001,
