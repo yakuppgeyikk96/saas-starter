@@ -27,7 +27,7 @@ export default {
       ? "[name].[contenthash].chunk.js"
       : "[name].chunk.js",
     clean: true,
-    publicPath: "http://localhost:3000/",
+    publicPath: "http://localhost:3002/",
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".jsx"],
@@ -65,12 +65,14 @@ export default {
           }),
         ]
       : []),
+    new HtmlWebpackPlugin({
+      template: "./public/index.html",
+    }),
     new ModuleFederationPlugin({
-      name: "shell",
+      name: "users",
       filename: "remoteEntry.js",
-      remotes: {
-        dashboard: "dashboard@http://localhost:3001/remoteEntry.js",
-        users: "users@http://localhost:3002/remoteEntry.js",
+      exposes: {
+        "./Users": "./src/App.tsx",
       },
       shared: {
         react: {
@@ -90,18 +92,15 @@ export default {
         },
       },
     }),
-    new HtmlWebpackPlugin({
-      template: "./public/index.html",
-    }),
     ...(process.env.ANALYZE ? [new BundleAnalyzerPlugin()] : []),
   ],
   devServer: {
-    port: 3000,
+    port: 3002,
     hot: true,
     open: false,
-    historyApiFallback: true,
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
   },
 };
+

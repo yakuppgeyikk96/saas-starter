@@ -1,5 +1,5 @@
 {
-  "name": "shell",
+  "name": "users",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -13,8 +13,7 @@
   "dependencies": {
     "@repo/ui": "workspace:*",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.28.0"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -28,8 +27,8 @@
     "postcss": "^8.5.6",
     "postcss-loader": "^8.1.1",
     "style-loader": "^4.0.0",
-    "tailwindcss": "^4.1.17",
     "mini-css-extract-plugin": "^2.9.4",
+    "tailwindcss": "^4.1.17",
     "ts-loader": "^9.5.1",
     "typescript": "^5.9.2",
     "webpack": "^5.96.1",
@@ -38,3 +37,4 @@
     "webpack-dev-server": "^5.1.0"
   }
 }
+
