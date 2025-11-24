@@ -2,8 +2,6 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 
-import "@repo/ui/styles.css";
-
 const container = document.getElementById("root");
 if (!container) {
   throw new Error("Root element not found");
@@ -15,4 +13,3 @@ root.render(
     <App />
   </React.StrictMode>
 );
-
