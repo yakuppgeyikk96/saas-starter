@@ -3,7 +3,6 @@ import { useSidebarStore } from "../../stores/sidebarStore";
 
 const ToggleSidebarButton = () => {
   const toggleSidebar = useSidebarStore((state) => state.toggle);
-  const isCollapsed = useSidebarStore((state) => state.isCollapsed);
 
   return (
     <button

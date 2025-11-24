@@ -1,4 +1,5 @@
 import { UserIcon } from "@repo/ui/icons";
+import ThemeToggler from "./ThemeToggler";
 import ToggleSidebarButton from "./ToggleSidebarButton";
 
 const Navbar = () => {
@@ -7,7 +8,8 @@ const Navbar = () => {
       <div className="flex items-center">
         <ToggleSidebarButton />
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center gap-2">
+        <ThemeToggler />
         <button
           type="button"
           className="p-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
