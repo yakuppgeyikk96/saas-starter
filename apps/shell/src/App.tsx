@@ -5,6 +5,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Navbar, Sidebar } from "./components/layout";
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 import UsersPage from "./pages/UsersPage";
 import { useThemeStore } from "./stores/themeStore";
 
@@ -53,6 +54,7 @@ const App = () => {
       ) : (
         <Routes>
           <Route path="/auth/login" element={<LoginPage />} />
+          <Route path="/auth/signup" element={<SignupPage />} />
           <Route path="*" element={<Navigate to="/auth/login" replace />} />
         </Routes>
       )}

@@ -1,25 +1,24 @@
-// apps/shell/src/pages/LoginPage.tsx
-import { LoginForm } from "@repo/auth/components";
+import { SignupForm } from "@repo/auth/components";
 import { Link } from "react-router-dom";
 
-const LoginPage = () => {
+const SignupPage = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
       <div className="w-full max-w-md space-y-6 p-8 border border-border rounded-md shadow">
         <div className="text-center">
-          <h1 className="text-2xl font-bold">Welcome back</h1>
+          <h1 className="text-2xl font-bold">Create an account</h1>
           <p className="text-muted-foreground mt-2">
-            Sign in to your account to continue
+            Sign up to get started
           </p>
         </div>
-        <LoginForm />
+        <SignupForm />
         <div className="text-center text-sm">
-          <span className="text-muted-foreground">Don't have an account? </span>
+          <span className="text-muted-foreground">Already have an account? </span>
           <Link
-            to="/auth/signup"
+            to="/auth/login"
             className="text-primary hover:underline font-medium"
           >
-            Sign up
+            Sign in
           </Link>
         </div>
       </div>
@@ -27,4 +26,5 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;
+
