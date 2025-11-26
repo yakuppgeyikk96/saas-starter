@@ -1,12 +1,16 @@
+import { ProtectedRoute } from "@repo/auth/components";
+import { useAuthStore } from "@repo/auth/stores";
 import { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Navbar, Sidebar } from "./components/layout";
 import DashboardPage from "./pages/DashboardPage";
+import LoginPage from "./pages/LoginPage";
 import UsersPage from "./pages/UsersPage";
 import { useThemeStore } from "./stores/themeStore";
 
 const App = () => {
   const theme = useThemeStore((state) => state.theme);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   useEffect(() => {
     if (theme === "dark") {
@@ -18,19 +22,40 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <div className="flex min-h-screen bg-background">
-        <Sidebar />
-        <div className="flex-1 flex flex-col">
-          <Navbar />
-          <main className="flex-1 overflow-auto">
-            <Routes>
-              <Route path="/" element={<DashboardPage />} />
-              <Route path="/users" element={<UsersPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </main>
+      {isAuthenticated ? (
+        <div className="flex min-h-screen bg-background">
+          <Sidebar />
+          <div className="flex-1 flex flex-col">
+            <Navbar />
+            <main className="flex-1 overflow-auto">
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute>
+                      <DashboardPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/users"
+                  element={
+                    <ProtectedRoute>
+                      <UsersPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </main>
+          </div>
         </div>
-      </div>
+      ) : (
+        <Routes>
+          <Route path="/auth/login" element={<LoginPage />} />
+          <Route path="*" element={<Navigate to="/auth/login" replace />} />
+        </Routes>
+      )}
     </BrowserRouter>
   );
 };

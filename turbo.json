@@ -12,7 +12,8 @@
       "dependsOn": ["^lint"]
     },
     "check-types": {
-      "dependsOn": ["^check-types"]
+      "dependsOn": ["^check-types"],
+      "env": ["NODE_ENV", "ANALYZE", "API_BASE_URL"]
     },
     "dev": {
       "cache": false,

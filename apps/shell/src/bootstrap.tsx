@@ -1,8 +1,13 @@
+import { configureApi } from "@repo/auth/lib";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 
-import "@repo/ui/styles.css";
+import "@repo/styles/styles.css";
+
+// Configure API base URL from webpack DefinePlugin
+const apiUrl = (window as any).__API_BASE_URL__ || "http://localhost:8080";
+configureApi(apiUrl);
 
 const container = document.getElementById("root");
 if (!container) {

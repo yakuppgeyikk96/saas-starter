@@ -45,7 +45,7 @@ export const LoginForm = ({ className, onSuccess }: LoginFormProps) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={cn("space-y-4", className)}
+      className={cn("flex flex-col gap-4", className)}
     >
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
@@ -53,9 +53,9 @@ export const LoginForm = ({ className, onSuccess }: LoginFormProps) => {
           id="email"
           type="email"
           placeholder="you@example.com"
+          aria-invalid={errors.email ? "true" : "false"}
           {...register("email")}
           disabled={isLoading}
-          aria-invalid={errors.email ? "true" : "false"}
         />
         {errors.email && (
           <p className="text-sm text-destructive">{errors.email.message}</p>
@@ -68,9 +68,9 @@ export const LoginForm = ({ className, onSuccess }: LoginFormProps) => {
           id="password"
           type="password"
           placeholder="••••••••"
+          aria-invalid={errors.password ? "true" : "false"}
           {...register("password")}
           disabled={isLoading}
-          aria-invalid={errors.password ? "true" : "false"}
         />
         {errors.password && (
           <p className="text-sm text-destructive">{errors.password.message}</p>

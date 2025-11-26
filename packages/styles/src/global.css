@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
-@source "../components/**/*.{tsx,ts,jsx,js}";
-@source "../lib/**/*.{tsx,ts,jsx,js}";
+@source "../../../packages/ui/src/**/*.{tsx,ts,jsx,js}";
+@source "../../../packages/auth/src/**/*.{tsx,ts,jsx,js}";
+@source "../../../apps/**/src/**/*.{tsx,ts,jsx,js}";
 
 :root {
   --background: oklch(0.9940 0 0);
@@ -174,3 +175,4 @@
 body {
   letter-spacing: var(--tracking-normal);
 }
+

@@ -5,7 +5,6 @@
   "exports": {
     "./*": "./src/components/ui/*.tsx",
     "./lib/utils": "./src/lib/utils.ts",
-    "./styles.css": "./src/styles/global.css",
     "./icons": "./src/icons.ts"
   },
   "scripts": {

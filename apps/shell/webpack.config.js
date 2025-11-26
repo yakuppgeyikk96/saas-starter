@@ -1,8 +1,11 @@
+import Dotenv from "dotenv-webpack";
 import { readFileSync } from "fs";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import path from "path";
+import process from "process";
 import { fileURLToPath } from "url";
+import webpack from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import ModuleFederationPlugin from "webpack/lib/container/ModuleFederationPlugin.js";
 
@@ -65,6 +68,12 @@ export default {
           }),
         ]
       : []),
+    new webpack.DefinePlugin({
+      __API_BASE_URL__: JSON.stringify(
+        process.env.API_BASE_URL || "http://localhost:8080"
+      ),
+    }),
+    new Dotenv(),
     new ModuleFederationPlugin({
       name: "shell",
       filename: "remoteEntry.js",
