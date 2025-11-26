@@ -2,11 +2,14 @@ import cors from "cors";
 import express, { Express } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import { connectDatabase } from "./lib/prisma";
 import { errorHandler } from "./middleware/errorHandler";
 import { notFoundHandler } from "./middleware/notFoundHandler";
 
-export const createApp = (): Express => {
+export const createApp = async (): Promise<Express> => {
   const app = express();
+
+  await connectDatabase();
 
   // Middleware
   app.use(helmet());
