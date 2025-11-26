@@ -85,6 +85,11 @@ export default {
           requiredVersion: deps["react-dom"],
           eager: false,
         },
+        "react-router-dom": {
+          singleton: true,
+          requiredVersion: deps["react-router-dom"],
+          eager: false,
+        },
         "@repo/ui": {
           singleton: true,
           requiredVersion: deps["@repo/ui"],
