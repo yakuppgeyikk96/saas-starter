@@ -1,0 +1,48 @@
+{
+  "name": "auth",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "webpack serve --mode development",
+    "start": "webpack serve --mode development",
+    "build": "NODE_ENV=production webpack --mode production",
+    "analyze": "ANALYZE=true NODE_ENV=production webpack --mode production",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@repo/styles": "workspace:*",
+    "@repo/ui": "workspace:*",
+    "axios": "^1.7.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.66.1",
+    "react-router-dom": "^6.28.0",
+    "zod": "^3.23.8",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@tailwindcss/postcss": "^4.1.17",
+    "@types/node": "^22.15.3",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "css-loader": "^7.1.2",
+    "dotenv-webpack": "^8.1.1",
+    "eslint": "^9.39.1",
+    "html-webpack-plugin": "^5.6.0",
+    "mini-css-extract-plugin": "^2.9.4",
+    "postcss": "^8.5.6",
+    "postcss-loader": "^8.1.1",
+    "style-loader": "^4.0.0",
+    "tailwindcss": "^4.1.17",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.9.2",
+    "webpack": "^5.96.1",
+    "webpack-bundle-analyzer": "^4.10.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
+  }
+}

@@ -85,6 +85,103 @@ importers:
         specifier: ^5.9.2
         version: 5.9.2
 
+  apps/auth:
+    dependencies:
+      '@hookform/resolvers':
+        specifier: ^5.2.2
+        version: 5.2.2(react-hook-form@7.66.1(react@18.3.1))
+      '@repo/styles':
+        specifier: workspace:*
+        version: link:../../packages/styles
+      '@repo/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      axios:
+        specifier: ^1.7.7
+        version: 1.13.2
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-hook-form:
+        specifier: ^7.66.1
+        version: 7.66.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+      zustand:
+        specifier: ^5.0.8
+        version: 5.0.8(@types/react@18.3.27)(react@18.3.1)
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@tailwindcss/postcss':
+        specifier: ^4.1.17
+        version: 4.1.17
+      '@types/node':
+        specifier: ^22.15.3
+        version: 22.15.3
+      '@types/react':
+        specifier: ^18.3.5
+        version: 18.3.27
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.7(@types/react@18.3.27)
+      css-loader:
+        specifier: ^7.1.2
+        version: 7.1.2(webpack@5.103.0(webpack-cli@5.1.4))
+      dotenv-webpack:
+        specifier: ^8.1.1
+        version: 8.1.1(webpack@5.103.0(webpack-cli@5.1.4))
+      eslint:
+        specifier: ^9.39.1
+        version: 9.39.1(jiti@2.6.1)
+      html-webpack-plugin:
+        specifier: ^5.6.0
+        version: 5.6.5(webpack@5.103.0(webpack-cli@5.1.4))
+      mini-css-extract-plugin:
+        specifier: ^2.9.4
+        version: 2.9.4(webpack@5.103.0(webpack-cli@5.1.4))
+      postcss:
+        specifier: ^8.5.6
+        version: 8.5.6
+      postcss-loader:
+        specifier: ^8.1.1
+        version: 8.2.0(postcss@8.5.6)(typescript@5.9.2)(webpack@5.103.0(webpack-cli@5.1.4))
+      style-loader:
+        specifier: ^4.0.0
+        version: 4.0.0(webpack@5.103.0(webpack-cli@5.1.4))
+      tailwindcss:
+        specifier: ^4.1.17
+        version: 4.1.17
+      ts-loader:
+        specifier: ^9.5.1
+        version: 9.5.4(typescript@5.9.2)(webpack@5.103.0(webpack-cli@5.1.4))
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.2
+      webpack:
+        specifier: ^5.96.1
+        version: 5.103.0(webpack-cli@5.1.4)
+      webpack-bundle-analyzer:
+        specifier: ^4.10.1
+        version: 4.10.2
+      webpack-cli:
+        specifier: ^5.1.4
+        version: 5.1.4(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@5.2.2)(webpack@5.103.0)
+      webpack-dev-server:
+        specifier: ^5.1.0
+        version: 5.2.2(webpack-cli@5.1.4)(webpack@5.103.0)
+
   apps/dashboard:
     dependencies:
       '@repo/styles':
@@ -4228,7 +4325,7 @@ snapshots:
 
   '@types/connect-history-api-fallback@1.5.4':
     dependencies:
-      '@types/express-serve-static-core': 4.19.7
+      '@types/express-serve-static-core': 5.1.0
       '@types/node': 22.15.3
 
   '@types/connect@3.4.38':

@@ -1,5 +1,4 @@
-// apps/shell/src/pages/LoginPage.tsx
-import { LoginForm } from "@repo/auth/components";
+import { LoginForm } from "auth/components";
 import { Link } from "react-router-dom";
 
 const LoginPage = () => {
@@ -14,7 +13,9 @@ const LoginPage = () => {
         </div>
         <LoginForm />
         <div className="text-center text-sm">
-          <span className="text-muted-foreground">Don't have an account? </span>
+          <span className="text-muted-foreground">
+            Don&apos;t have an account?{" "}
+          </span>
           <Link
             to="/auth/signup"
             className="text-primary hover:underline font-medium"

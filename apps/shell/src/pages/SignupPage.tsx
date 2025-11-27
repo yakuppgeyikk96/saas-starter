@@ -1,4 +1,4 @@
-import { SignupForm } from "@repo/auth/components";
+import { SignupForm } from "auth/components";
 import { Link } from "react-router-dom";
 
 const SignupPage = () => {

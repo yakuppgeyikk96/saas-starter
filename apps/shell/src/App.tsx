@@ -1,17 +1,20 @@
-import { ProtectedRoute } from "@repo/auth/components";
-import { useAuthStore } from "@repo/auth/stores";
-import { useEffect } from "react";
+import { ProtectedRoute } from "auth/components";
+import { useAuthStore } from "auth/stores";
+import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Navbar, Sidebar } from "./components/layout";
 import DashboardPage from "./pages/DashboardPage";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
 import UsersPage from "./pages/UsersPage";
 import { useThemeStore } from "./stores/themeStore";
+
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const SignupPage = lazy(() => import("./pages/SignupPage"));
 
 const App = () => {
   const theme = useThemeStore((state) => state.theme);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  console.log(isAuthenticated);
 
   useEffect(() => {
     if (theme === "dark") {
@@ -53,8 +56,22 @@ const App = () => {
         </div>
       ) : (
         <Routes>
-          <Route path="/auth/login" element={<LoginPage />} />
-          <Route path="/auth/signup" element={<SignupPage />} />
+          <Route
+            path="/auth/login"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <LoginPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/auth/signup"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <SignupPage />
+              </Suspense>
+            }
+          />
           <Route path="*" element={<Navigate to="/auth/login" replace />} />
         </Routes>
       )}

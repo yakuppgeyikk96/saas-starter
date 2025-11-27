@@ -1,7 +1,7 @@
-import { configureApi } from "auth/lib";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
+import { configureApi } from "./lib/api";
 
 import "@repo/styles/styles.css";
 

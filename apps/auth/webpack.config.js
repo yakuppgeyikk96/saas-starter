@@ -30,7 +30,7 @@ export default {
       ? "[name].[contenthash].chunk.js"
       : "[name].chunk.js",
     clean: true,
-    publicPath: "http://localhost:3000/",
+    publicPath: "http://localhost:3003/",
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".jsx"],
@@ -75,12 +75,23 @@ export default {
     }),
     new Dotenv(),
     new ModuleFederationPlugin({
-      name: "shell",
+      name: "auth",
       filename: "remoteEntry.js",
-      remotes: {
-        auth: "auth@http://localhost:3003/remoteEntry.js",
-        dashboard: "dashboard@http://localhost:3001/remoteEntry.js",
-        users: "users@http://localhost:3002/remoteEntry.js",
+      exposes: {
+        "./stores": "./src/stores/index.ts",
+        "./stores/authStore": "./src/stores/authStore.ts",
+        "./components": "./src/components/index.ts",
+        "./components/LoginForm": "./src/components/LoginForm.tsx",
+        "./components/SignupForm": "./src/components/SignupForm.tsx",
+        "./components/ProtectedRoute": "./src/components/ProtectedRoute.tsx",
+        "./hooks": "./src/hooks/index.ts",
+        "./hooks/useAuth": "./src/hooks/useAuth.ts",
+        "./hooks/useRequireAuth": "./src/hooks/useRequireAuth.ts",
+        "./lib": "./src/lib/index.ts",
+        "./lib/api": "./src/lib/api.ts",
+        "./lib/constants": "./src/lib/constants.ts",
+        "./lib/schemas": "./src/lib/schemas.ts",
+        "./types": "./src/types/index.ts",
       },
       shared: {
         react: {
@@ -116,7 +127,7 @@ export default {
     ...(process.env.ANALYZE ? [new BundleAnalyzerPlugin()] : []),
   ],
   devServer: {
-    port: 3000,
+    port: 3003,
     hot: true,
     open: false,
     historyApiFallback: true,
