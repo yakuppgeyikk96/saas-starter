@@ -5,6 +5,7 @@ import morgan from "morgan";
 import { connectDatabase } from "./lib/prisma";
 import { errorHandler } from "./middleware/errorHandler";
 import { notFoundHandler } from "./middleware/notFoundHandler";
+import apiRoutes from "./routes";
 
 export const createApp = async (): Promise<Express> => {
   const app = express();
@@ -24,8 +25,7 @@ export const createApp = async (): Promise<Express> => {
   });
 
   // API routes
-  // app.use("/api/v1/users", userRoutes);
-  // app.use("/api/v1/auth", authRoutes);
+  app.use("/api", apiRoutes);
 
   // Error handling
   app.use(notFoundHandler);
