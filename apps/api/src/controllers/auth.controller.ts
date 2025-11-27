@@ -1,12 +1,18 @@
 // Auth controller - Request/Response handlers
 import { Request, Response } from "express";
-import { signup as signupService } from "../services/auth.service";
-import { SignupRequest } from "../types/requests/auth.request";
+import {
+  login as loginService,
+  signup as signupService,
+} from "../services/auth.service";
+import { LoginRequest, SignupRequest } from "../types/requests/auth.request";
 import {
   IApiResponse,
   createSuccessResponse,
 } from "../types/responses/api.response";
-import { SignupResponseData } from "../types/responses/auth.response";
+import {
+  LoginResponseData,
+  SignupResponseData,
+} from "../types/responses/auth.response";
 import { asyncHandler } from "../utils/asyncHandler";
 
 /**
@@ -37,5 +43,36 @@ export const signup = asyncHandler(
     );
 
     res.status(201).json(response);
+  }
+);
+
+/**
+ * Login controller
+ */
+export const login = asyncHandler(
+  async (
+    req: Request<{}, IApiResponse<LoginResponseData>, LoginRequest>,
+    res: Response<IApiResponse<LoginResponseData>>
+  ) => {
+    const request: LoginRequest = req.body;
+
+    // Call service (errors will be caught by asyncHandler)
+    const result = await loginService(request);
+
+    // Create response data
+    const responseData: LoginResponseData = {
+      user: result.user,
+      token: result.token,
+      refreshToken: result.refreshToken,
+    };
+
+    // Create success response
+    const response = createSuccessResponse(
+      responseData,
+      "Login successful",
+      200
+    );
+
+    res.status(200).json(response);
   }
 );
