@@ -3,11 +3,10 @@
   publish = "apps/auth/dist"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "22"
   NODE_ENV = "production"
   PNPM_VERSION = "9.0.0"
 
-# SPA routing için tüm route'ları index.html'e yönlendir
 [[redirects]]
   from = "/*"
   to = "/index.html"
