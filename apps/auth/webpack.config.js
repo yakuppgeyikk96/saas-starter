@@ -22,7 +22,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 const publicPath = isProduction
   ? process.env.PUBLIC_PATH || "/"
-  : "http://localhost:3003";
+  : "http://localhost:3003/";
 
 export default {
   entry: "./src/index.tsx",
@@ -123,6 +123,11 @@ export default {
         "@repo/ui": {
           singleton: true,
           requiredVersion: deps["@repo/ui"],
+          eager: false,
+        },
+        axios: {
+          singleton: true,
+          requiredVersion: deps.axios,
           eager: false,
         },
       },
