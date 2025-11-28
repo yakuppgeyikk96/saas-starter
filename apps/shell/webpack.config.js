@@ -86,6 +86,9 @@ export default {
       __API_BASE_URL__: JSON.stringify(
         process.env.API_BASE_URL || "http://localhost:8080"
       ),
+      __AUTH_URL__: JSON.stringify(getRemoteUrl("auth", 3003)),
+      __DASHBOARD_URL__: JSON.stringify(getRemoteUrl("dashboard", 3001)),
+      __USERS_URL__: JSON.stringify(getRemoteUrl("users", 3002)),
     }),
     new Dotenv(),
     new ModuleFederationPlugin({
