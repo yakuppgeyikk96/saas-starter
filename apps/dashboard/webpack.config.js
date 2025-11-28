@@ -1,7 +1,9 @@
+import CopyWebpackPlugin from "copy-webpack-plugin";
 import { readFileSync } from "fs";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import path from "path";
+import process from "process";
 import { fileURLToPath } from "url";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import ModuleFederationPlugin from "webpack/lib/container/ModuleFederationPlugin.js";
@@ -16,6 +18,11 @@ const packageJson = JSON.parse(
 const deps = packageJson.dependencies;
 const isProduction = process.env.NODE_ENV === "production";
 
+// Production için publicPath'i düzelt
+const publicPath = isProduction
+  ? process.env.PUBLIC_PATH || "/"
+  : "http://localhost:3001/";
+
 export default {
   entry: "./src/index.tsx",
   mode: isProduction ? "production" : "development",
@@ -27,7 +34,7 @@ export default {
       ? "[name].[contenthash].chunk.js"
       : "[name].chunk.js",
     clean: true,
-    publicPath: "http://localhost:3001/",
+    publicPath: publicPath,
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".jsx"],
@@ -68,6 +75,19 @@ export default {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
+    // Netlify için _headers dosyasını kopyala (redirects netlify.toml'da)
+    ...(isProduction
+      ? [
+          new CopyWebpackPlugin({
+            patterns: [
+              {
+                from: path.resolve(__dirname, "public/_headers"),
+                to: path.resolve(__dirname, "dist/_headers"),
+              },
+            ],
+          }),
+        ]
+      : []),
     new ModuleFederationPlugin({
       name: "dashboard",
       filename: "remoteEntry.js",
