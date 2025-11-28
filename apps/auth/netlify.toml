@@ -1,0 +1,22 @@
+[build]
+  command = "cd ../.. && pnpm install --prod=false && pnpm --filter auth build"
+  publish = "apps/auth/dist"
+  base = "apps/auth"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NODE_ENV = "production"
+  PNPM_VERSION = "9.0.0"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+    X-Frame-Options = "SAMEORIGIN"
