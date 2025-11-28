@@ -130,15 +130,11 @@ export default {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
-    // Netlify için _redirects ve _headers dosyalarını kopyala
+    // Netlify için _headers dosyasını kopyala (redirects netlify.toml'da)
     ...(isProduction
       ? [
           new CopyWebpackPlugin({
             patterns: [
-              {
-                from: path.resolve(__dirname, "public/_redirects"),
-                to: path.resolve(__dirname, "dist/_redirects"),
-              },
               {
                 from: path.resolve(__dirname, "public/_headers"),
                 to: path.resolve(__dirname, "dist/_headers"),
