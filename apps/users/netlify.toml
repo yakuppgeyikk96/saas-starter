@@ -7,12 +7,6 @@
   NODE_ENV = "production"
   PNPM_VERSION = "9.0.0"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = false
-
 # Module Federation için CORS headers
 [[headers]]
   for = "/*"
