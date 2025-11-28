@@ -24,14 +24,18 @@ const publicPath = isProduction
   ? process.env.PUBLIC_PATH || "/"
   : "http://localhost:3000/";
 
-const getRemoteUrl = (appName, defaultPort) => {
-  if (isProduction) {
-    const envVar = process.env[`${appName.toUpperCase()}_URL`];
-    if (envVar) return envVar;
-    return `https://${appName}-mf.netlify.app`;
-  }
-  return `http://localhost:${defaultPort}`;
-};
+const remotes = isProduction
+  ? {
+      auth: "auth@https://yg-saas-auth.netlify.app/remoteEntry.js",
+      dashboard:
+        "dashboard@https://yg-saas-dashboard.netlify.app/remoteEntry.js",
+      users: "users@https://yg-saas-users.netlify.app/remoteEntry.js",
+    }
+  : {
+      auth: "auth@http://localhost:3003/remoteEntry.js",
+      dashboard: "dashboard@http://localhost:3001/remoteEntry.js",
+      users: "users@http://localhost:3002/remoteEntry.js",
+    };
 
 export default {
   entry: "./src/index.tsx",
@@ -86,19 +90,15 @@ export default {
       __API_BASE_URL__: JSON.stringify(
         process.env.API_BASE_URL || "http://localhost:8080"
       ),
-      __AUTH_URL__: JSON.stringify(getRemoteUrl("auth", 3003)),
-      __DASHBOARD_URL__: JSON.stringify(getRemoteUrl("dashboard", 3001)),
-      __USERS_URL__: JSON.stringify(getRemoteUrl("users", 3002)),
+      __AUTH_URL__: JSON.stringify(remotes.auth),
+      __DASHBOARD_URL__: JSON.stringify(remotes.dashboard),
+      __USERS_URL__: JSON.stringify(remotes.users),
     }),
     new Dotenv(),
     new ModuleFederationPlugin({
       name: "shell",
       filename: "remoteEntry.js",
-      remotes: {
-        auth: `auth@${getRemoteUrl("auth", 3003)}/remoteEntry.js`,
-        dashboard: `dashboard@${getRemoteUrl("dashboard", 3001)}/remoteEntry.js`,
-        users: `users@${getRemoteUrl("users", 3002)}/remoteEntry.js`,
-      },
+      remotes,
       shared: {
         react: {
           singleton: true,
