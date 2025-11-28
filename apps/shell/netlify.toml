@@ -1,0 +1,23 @@
+[build]
+  command = "cd ../.. && pnpm install --prod=false && pnpm --filter shell build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NODE_ENV = "production"
+  PNPM_VERSION = "9.0.0"
+
+# SPA routing için tüm route'ları index.html'e yönlendir
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Module Federation için CORS headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+    X-Frame-Options = "SAMEORIGIN"

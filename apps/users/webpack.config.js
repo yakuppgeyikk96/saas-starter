@@ -18,7 +18,6 @@ const packageJson = JSON.parse(
 const deps = packageJson.dependencies;
 const isProduction = process.env.NODE_ENV === "production";
 
-// Production için publicPath'i düzelt
 const publicPath = isProduction
   ? process.env.PUBLIC_PATH || "/"
   : "http://localhost:3002/";
@@ -75,7 +74,6 @@ export default {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
-    // Netlify için _headers dosyasını kopyala (redirects netlify.toml'da)
     ...(isProduction
       ? [
           new CopyWebpackPlugin({

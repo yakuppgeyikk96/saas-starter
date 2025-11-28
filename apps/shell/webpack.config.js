@@ -1,3 +1,4 @@
+import CopyWebpackPlugin from "copy-webpack-plugin";
 import Dotenv from "dotenv-webpack";
 import { readFileSync } from "fs";
 import HtmlWebpackPlugin from "html-webpack-plugin";
@@ -19,6 +20,19 @@ const packageJson = JSON.parse(
 const deps = packageJson.dependencies;
 const isProduction = process.env.NODE_ENV === "production";
 
+const publicPath = isProduction
+  ? process.env.PUBLIC_PATH || "/"
+  : "http://localhost:3000/";
+
+const getRemoteUrl = (appName, defaultPort) => {
+  if (isProduction) {
+    const envVar = process.env[`${appName.toUpperCase()}_URL`];
+    if (envVar) return envVar;
+    return `https://${appName}-mf.netlify.app`;
+  }
+  return `http://localhost:${defaultPort}`;
+};
+
 export default {
   entry: "./src/index.tsx",
   mode: isProduction ? "production" : "development",
@@ -30,7 +44,7 @@ export default {
       ? "[name].[contenthash].chunk.js"
       : "[name].chunk.js",
     clean: true,
-    publicPath: "http://localhost:3000/",
+    publicPath: publicPath,
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".jsx"],
@@ -78,9 +92,9 @@ export default {
       name: "shell",
       filename: "remoteEntry.js",
       remotes: {
-        auth: "auth@http://localhost:3003/remoteEntry.js",
-        dashboard: "dashboard@http://localhost:3001/remoteEntry.js",
-        users: "users@http://localhost:3002/remoteEntry.js",
+        auth: `auth@${getRemoteUrl("auth", 3003)}/remoteEntry.js`,
+        dashboard: `dashboard@${getRemoteUrl("dashboard", 3001)}/remoteEntry.js`,
+        users: `users@${getRemoteUrl("users", 3002)}/remoteEntry.js`,
       },
       shared: {
         react: {
@@ -113,6 +127,18 @@ export default {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
+    ...(isProduction
+      ? [
+          new CopyWebpackPlugin({
+            patterns: [
+              {
+                from: path.resolve(__dirname, "public/_headers"),
+                to: path.resolve(__dirname, "dist/_headers"),
+              },
+            ],
+          }),
+        ]
+      : []),
     ...(process.env.ANALYZE ? [new BundleAnalyzerPlugin()] : []),
   ],
   devServer: {
