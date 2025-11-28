@@ -138,10 +138,6 @@ export default {
                 from: path.resolve(__dirname, "public/_headers"),
                 to: path.resolve(__dirname, "dist/_headers"),
               },
-              {
-                from: path.resolve(__dirname, "public/_redirects"),
-                to: path.resolve(__dirname, "dist/_redirects"),
-              },
             ],
           }),
         ]
