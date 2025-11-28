@@ -1,7 +1,6 @@
 [build]
   command = "cd ../.. && pnpm install --prod=false && pnpm --filter auth build"
   publish = "apps/auth/dist"
-  base = "apps/auth"
 
 [build.environment]
   NODE_VERSION = "18"
