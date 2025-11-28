@@ -1,3 +1,4 @@
+import CopyWebpackPlugin from "copy-webpack-plugin";
 import Dotenv from "dotenv-webpack";
 import { readFileSync } from "fs";
 import HtmlWebpackPlugin from "html-webpack-plugin";
@@ -129,6 +130,23 @@ export default {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
+    // Netlify için _redirects ve _headers dosyalarını kopyala
+    ...(isProduction
+      ? [
+          new CopyWebpackPlugin({
+            patterns: [
+              {
+                from: path.resolve(__dirname, "public/_redirects"),
+                to: path.resolve(__dirname, "dist/_redirects"),
+              },
+              {
+                from: path.resolve(__dirname, "public/_headers"),
+                to: path.resolve(__dirname, "dist/_headers"),
+              },
+            ],
+          }),
+        ]
+      : []),
     ...(process.env.ANALYZE ? [new BundleAnalyzerPlugin()] : []),
   ],
   devServer: {
