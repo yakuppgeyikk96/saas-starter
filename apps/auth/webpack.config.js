@@ -19,6 +19,10 @@ const packageJson = JSON.parse(
 const deps = packageJson.dependencies;
 const isProduction = process.env.NODE_ENV === "production";
 
+const publicPath = isProduction
+  ? process.env.PUBLIC_PATH || "/"
+  : "http://localhost:3003";
+
 export default {
   entry: "./src/index.tsx",
   mode: isProduction ? "production" : "development",
@@ -30,7 +34,7 @@ export default {
       ? "[name].[contenthash].chunk.js"
       : "[name].chunk.js",
     clean: true,
-    publicPath: "http://localhost:3003/",
+    publicPath,
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".jsx"],
@@ -72,6 +76,7 @@ export default {
       __API_BASE_URL__: JSON.stringify(
         process.env.API_BASE_URL || "http://localhost:8080"
       ),
+      __PUBLIC_PATH__: JSON.stringify(publicPath),
     }),
     new Dotenv(),
     new ModuleFederationPlugin({
