@@ -27,6 +27,9 @@ export default {
   entry: "./src/index.tsx",
   mode: isProduction ? "production" : "development",
   devtool: isProduction ? "source-map" : "eval-source-map",
+  optimization: {
+    runtimeChunk: false,
+  },
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: isProduction ? "[name].[contenthash].js" : "[name].js",
