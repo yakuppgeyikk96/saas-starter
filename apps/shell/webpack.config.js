@@ -25,10 +25,10 @@ const publicPath = isProduction
 
 const remotes = isProduction
   ? {
-      auth: "auth@https://yg-saas-auth.netlify.app/remoteEntry.js",
+      auth: "auth@https://yg-saas-auth.vercel.app/remoteEntry.js",
       dashboard:
-        "dashboard@https://yg-saas-dashboard.netlify.app/remoteEntry.js",
-      users: "users@https://yg-saas-users.netlify.app/remoteEntry.js",
+        "dashboard@https://yg-saas-dashboard.vercel.app/remoteEntry.js",
+      users: "users@https://yg-saas-users.vercel.app/remoteEntry.js",
     }
   : {
       auth: "auth@http://localhost:3003/remoteEntry.js",
