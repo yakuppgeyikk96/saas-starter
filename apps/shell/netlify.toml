@@ -1,5 +1,5 @@
 [build]
-  command = "cd ../.. && pnpm install --prod=false && pnpm --filter shell build"
+  command = "cd apps/shell && bash build.sh"
   publish = "dist"
 
 [build.environment]

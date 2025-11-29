@@ -1,5 +1,5 @@
 [build]
-  command = "cd ../.. && pnpm install --prod=false && pnpm --filter dashboard build"
+  command = "cd apps/dashboard && bash build.sh"
   publish = "dist"
 
 [build.environment]

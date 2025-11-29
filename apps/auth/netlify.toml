@@ -1,5 +1,5 @@
 [build]
-  command = "cd ../.. && pnpm install --prod=false && pnpm --filter auth build"
+  command = "cd apps/auth && bash build.sh"
   publish = "dist"
 
 [build.environment]
