@@ -20,9 +20,9 @@ const deps = packageJson.dependencies;
 const isProduction = process.env.NODE_ENV === "production";
 
 const PUBLIC_PATH = process.env.PUBLIC_PATH || "";
-const AUTH_URL = process.env.AUTH_URL || "http://localhost:3003/";
-const DASHBOARD_URL = process.env.DASHBOARD_URL || "http://localhost:3001/";
-const USERS_URL = process.env.USERS_URL || "http://localhost:3002/";
+const AUTH_URL = process.env.AUTH_URL || "http://localhost:3003";
+const DASHBOARD_URL = process.env.DASHBOARD_URL || "http://localhost:3001";
+const USERS_URL = process.env.USERS_URL || "http://localhost:3002";
 
 const publicPath = isProduction ? PUBLIC_PATH : "http://localhost:3000/";
 
