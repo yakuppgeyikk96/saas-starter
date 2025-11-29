@@ -3,4 +3,4 @@ set -e
 
 cd ../..
 pnpm install --prod=false
-pnpm build
+pnpm --filter dashboard build
