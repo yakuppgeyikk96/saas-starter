@@ -1,4 +1,3 @@
-import CopyWebpackPlugin from "copy-webpack-plugin";
 import Dotenv from "dotenv-webpack";
 import { readFileSync } from "fs";
 import HtmlWebpackPlugin from "html-webpack-plugin";
@@ -135,18 +134,6 @@ export default {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
-    ...(isProduction
-      ? [
-          new CopyWebpackPlugin({
-            patterns: [
-              {
-                from: path.resolve(__dirname, "public/_headers"),
-                to: path.resolve(__dirname, "dist/_headers"),
-              },
-            ],
-          }),
-        ]
-      : []),
     ...(process.env.ANALYZE ? [new BundleAnalyzerPlugin()] : []),
   ],
   devServer: {

@@ -1,4 +1,3 @@
-import CopyWebpackPlugin from "copy-webpack-plugin";
 import { readFileSync } from "fs";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
@@ -74,18 +73,6 @@ export default {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
-    ...(isProduction
-      ? [
-          new CopyWebpackPlugin({
-            patterns: [
-              {
-                from: path.resolve(__dirname, "public/_headers"),
-                to: path.resolve(__dirname, "dist/_headers"),
-              },
-            ],
-          }),
-        ]
-      : []),
     new ModuleFederationPlugin({
       name: "users",
       filename: "remoteEntry.js",
