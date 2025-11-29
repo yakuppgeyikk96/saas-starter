@@ -1,6 +1,6 @@
 {
   "buildCommand": "cd ../.. && pnpm install --prod=false && pnpm --filter shell build",
-  "outputDirectory": "dist",
+  "outputDirectory": "apps/shell/dist",
   "installCommand": "pnpm install --prod=false",
   "framework": null,
   "headers": [
