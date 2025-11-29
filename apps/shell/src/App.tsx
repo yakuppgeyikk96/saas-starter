@@ -3,6 +3,7 @@ import { useAuthStore } from "auth/stores";
 import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Navbar, Sidebar } from "./components/layout";
+import { PageLoading } from "./components/PageLoading";
 import DashboardPage from "./pages/DashboardPage";
 import UsersPage from "./pages/UsersPage";
 import { useThemeStore } from "./stores/themeStore";
@@ -59,7 +60,9 @@ const App = () => {
           <Route
             path="/auth/login"
             element={
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense
+                fallback={<PageLoading message="Loading login page..." />}
+              >
                 <LoginPage />
               </Suspense>
             }
@@ -67,7 +70,9 @@ const App = () => {
           <Route
             path="/auth/signup"
             element={
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense
+                fallback={<PageLoading message="Loading signup page..." />}
+              >
                 <SignupPage />
               </Suspense>
             }
