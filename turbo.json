@@ -13,7 +13,15 @@
     },
     "check-types": {
       "dependsOn": ["^check-types"],
-      "env": ["NODE_ENV", "ANALYZE", "API_BASE_URL", "PUBLIC_PATH"]
+      "env": [
+        "NODE_ENV",
+        "ANALYZE",
+        "API_BASE_URL",
+        "PUBLIC_PATH",
+        "AUTH_URL",
+        "DASHBOARD_URL",
+        "USERS_URL"
+      ]
     },
     "dev": {
       "cache": false,

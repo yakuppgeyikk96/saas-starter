@@ -17,9 +17,9 @@ const packageJson = JSON.parse(
 const deps = packageJson.dependencies;
 const isProduction = process.env.NODE_ENV === "production";
 
-const publicPath = isProduction
-  ? "https://yg-saas-dashboard.vercel.app/"
-  : "http://localhost:3001/";
+const PUBLIC_PATH = process.env.PUBLIC_PATH || "";
+
+const publicPath = isProduction ? PUBLIC_PATH : "http://localhost:3001/";
 
 export default {
   entry: "./src/index.tsx",

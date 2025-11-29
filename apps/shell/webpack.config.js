@@ -19,22 +19,18 @@ const packageJson = JSON.parse(
 const deps = packageJson.dependencies;
 const isProduction = process.env.NODE_ENV === "production";
 
-const publicPath = isProduction
-  ? "https://yg-saas-starter.vercel.app/"
-  : "http://localhost:3000/";
+const PUBLIC_PATH = process.env.PUBLIC_PATH || "";
+const AUTH_URL = process.env.AUTH_URL || "http://localhost:3003/";
+const DASHBOARD_URL = process.env.DASHBOARD_URL || "http://localhost:3001/";
+const USERS_URL = process.env.USERS_URL || "http://localhost:3002/";
 
-const remotes = isProduction
-  ? {
-      auth: "auth@https://yg-saas-auth.vercel.app/remoteEntry.js",
-      dashboard:
-        "dashboard@https://yg-saas-dashboard.vercel.app/remoteEntry.js",
-      users: "users@https://yg-saas-users.vercel.app/remoteEntry.js",
-    }
-  : {
-      auth: "auth@http://localhost:3003/remoteEntry.js",
-      dashboard: "dashboard@http://localhost:3001/remoteEntry.js",
-      users: "users@http://localhost:3002/remoteEntry.js",
-    };
+const publicPath = isProduction ? PUBLIC_PATH : "http://localhost:3000/";
+
+const remotes = {
+  auth: `auth@${AUTH_URL}/remoteEntry.js`,
+  dashboard: `dashboard@${DASHBOARD_URL}/remoteEntry.js`,
+  users: `users@${USERS_URL}/remoteEntry.js`,
+};
 
 export default {
   entry: "./src/index.tsx",
