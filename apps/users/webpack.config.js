@@ -18,7 +18,7 @@ const deps = packageJson.dependencies;
 const isProduction = process.env.NODE_ENV === "production";
 
 const publicPath = isProduction
-  ? "http://yg-saas-users.vercel.app/"
+  ? "https://yg-saas-users.vercel.app/"
   : "http://localhost:3002/";
 
 export default {

@@ -20,7 +20,7 @@ const deps = packageJson.dependencies;
 const isProduction = process.env.NODE_ENV === "production";
 
 const publicPath = isProduction
-  ? "http://yg-saas-starter.vercel.app/"
+  ? "https://yg-saas-starter.vercel.app/"
   : "http://localhost:3000/";
 
 const remotes = isProduction
