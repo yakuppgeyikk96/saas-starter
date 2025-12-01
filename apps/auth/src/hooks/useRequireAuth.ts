@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../stores/authStore';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../stores/authStore";
+import { useAuth } from "./useAuth";
 
 /**
  * Hook that requires authentication
@@ -8,23 +9,22 @@ import { useAuthStore } from '../stores/authStore';
  * Automatically fetches user data if token exists but user is null
  */
 export const useRequireAuth = () => {
-  const { isAuthenticated, isLoading, fetchUser, token } = useAuthStore();
+  const { isAuthenticated, token } = useAuthStore();
+  const { getUser } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     // If we have a token but no user, try to fetch user
-    if (token && !isAuthenticated && !isLoading) {
-      fetchUser();
+    if (token && !isAuthenticated) {
+      getUser();
     }
-  }, [token, isAuthenticated, isLoading, fetchUser]);
+  }, [token, isAuthenticated, getUser]);
 
   useEffect(() => {
-    // Redirect to login if not authenticated and not loading
-    if (!isLoading && !isAuthenticated) {
-      navigate('/auth/login');
+    if (!isAuthenticated) {
+      navigate("/auth/login");
     }
-  }, [isAuthenticated, isLoading, navigate]);
+  }, [isAuthenticated, navigate]);
 
-  return { isAuthenticated, isLoading };
+  return { isAuthenticated };
 };
-

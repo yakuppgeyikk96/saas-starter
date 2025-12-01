@@ -3,43 +3,27 @@ import { Button } from "@repo/ui/button";
 import { Input } from "@repo/ui/input";
 import { Label } from "@repo/ui/label";
 import { cn } from "@repo/ui/lib/utils";
-import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { loginSchema, type LoginFormData } from "../lib/schemas";
 
 interface LoginFormProps {
   className?: string;
-  onSuccess?: () => void;
 }
 
-export const LoginForm = ({ className, onSuccess }: LoginFormProps) => {
-  const navigate = useNavigate();
-  const { login, isLoading } = useAuth();
+export const LoginForm = ({ className }: LoginFormProps) => {
+  const { login, isLoggingIn } = useAuth();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    try {
-      await login(data);
-      onSuccess?.();
-      navigate("/");
-    } catch (error) {
-      // Handle API errors
-      const message =
-        error instanceof AxiosError
-          ? error.response?.data?.message || "Login failed"
-          : "Login failed";
-      setError("root", { message });
-    }
+    login(data);
   };
 
   return (
@@ -48,14 +32,17 @@ export const LoginForm = ({ className, onSuccess }: LoginFormProps) => {
       className={cn("flex flex-col gap-4", className)}
     >
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email" className="text-foreground">
+          Email
+        </Label>
         <Input
           id="email"
           type="email"
           placeholder="you@example.com"
+          className="text-foreground"
           aria-invalid={errors.email ? "true" : "false"}
           {...register("email")}
-          disabled={isLoading}
+          disabled={isLoggingIn}
         />
         {errors.email && (
           <p className="text-sm text-destructive">{errors.email.message}</p>
@@ -63,14 +50,17 @@ export const LoginForm = ({ className, onSuccess }: LoginFormProps) => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password" className="text-foreground">
+          Password
+        </Label>
         <Input
           id="password"
           type="password"
           placeholder="••••••••"
+          className="text-foreground"
           aria-invalid={errors.password ? "true" : "false"}
           {...register("password")}
-          disabled={isLoading}
+          disabled={isLoggingIn}
         />
         {errors.password && (
           <p className="text-sm text-destructive">{errors.password.message}</p>
@@ -81,8 +71,8 @@ export const LoginForm = ({ className, onSuccess }: LoginFormProps) => {
         <p className="text-sm text-destructive">{errors.root.message}</p>
       )}
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? "Signing in..." : "Sign in"}
+      <Button type="submit" className="w-full" disabled={isLoggingIn}>
+        {isLoggingIn ? "Signing in..." : "Sign in"}
       </Button>
     </form>
   );

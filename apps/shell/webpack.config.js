@@ -123,6 +123,11 @@ export default {
           requiredVersion: deps["@repo/ui"],
           eager: false,
         },
+        "@tanstack/react-query": {
+          singleton: true,
+          requiredVersion: deps["@tanstack/react-query"],
+          eager: false,
+        },
       },
     }),
     new HtmlWebpackPlugin({

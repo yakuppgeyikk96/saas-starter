@@ -132,6 +132,11 @@ export default {
           requiredVersion: deps.axios,
           eager: false,
         },
+        "@tanstack/react-query": {
+          singleton: true,
+          requiredVersion: deps["@tanstack/react-query"],
+          eager: false,
+        },
       },
     }),
     new HtmlWebpackPlugin({

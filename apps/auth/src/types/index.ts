@@ -34,3 +34,5 @@ export interface AuthError {
   code?: string;
   status?: number;
 }
+
+export * from "./api.types";
