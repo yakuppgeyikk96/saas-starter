@@ -36,3 +36,36 @@ export const createUser = async (data: CreateUserData): Promise<UserEntity> => {
     },
   });
 };
+
+/**
+ * Find user by id
+ */
+export const findUserById = async (id: string): Promise<UserEntity | null> => {
+  return prisma.user.findUnique({
+    where: { id },
+  });
+};
+
+/**
+ * Update user's refresh token
+ */
+export const updateRefreshToken = async (
+  userId: string,
+  refreshToken: string | null
+): Promise<UserEntity> => {
+  return prisma.user.update({
+    where: { id: userId },
+    data: { refreshToken },
+  });
+};
+
+/**
+ * Find user by refresh token
+ */
+export const findUserByRefreshToken = async (
+  refreshToken: string
+): Promise<UserEntity | null> => {
+  return prisma.user.findFirst({
+    where: { refreshToken },
+  });
+};

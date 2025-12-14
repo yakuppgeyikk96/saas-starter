@@ -22,3 +22,12 @@ export interface AuthResultDto {
   token: string;
   refreshToken: string;
 }
+
+export interface RefreshTokenDto {
+  refreshToken: string;
+}
+
+export interface RefreshTokenResultDto {
+  token: string;
+  refreshToken: string;
+}

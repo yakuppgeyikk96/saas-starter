@@ -1,5 +1,5 @@
 // Response types - API response types (Controller layer)
-import { UserDto } from '../dtos/auth.dto';
+import { UserDto } from "../dtos/auth.dto";
 
 // Auth response data types
 export interface SignupResponseData {
@@ -18,3 +18,7 @@ export interface MeResponseData {
   user: UserDto;
 }
 
+export interface RefreshTokenResponseData {
+  token: string;
+  refreshToken: string;
+}

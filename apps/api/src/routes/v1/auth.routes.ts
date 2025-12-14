@@ -1,7 +1,18 @@
 // Auth routes - API endpoint definitions
 import { Router } from "express";
-import { login, signup } from "../../controllers/auth.controller";
-import { validateLogin, validateSignup } from "../../validators/auth.validator";
+import {
+  login,
+  logout,
+  me,
+  refresh,
+  signup,
+} from "../../controllers/auth.controller";
+import { authenticate } from "../../middleware/auth.middleware";
+import {
+  validateLogin,
+  validateRefreshToken,
+  validateSignup,
+} from "../../validators/auth.validator";
 
 const router: Router = Router();
 
@@ -18,5 +29,26 @@ router.post("/signup", validateSignup, signup);
  * @access  Public
  */
 router.post("/login", validateLogin, login);
+
+/**
+ * @route   GET /api/v1/auth/me
+ * @desc    Get current user
+ * @access  Private
+ */
+router.get("/me", authenticate, me);
+
+/**
+ * @route   POST /api/v1/auth/refresh
+ * @desc    Refresh access token
+ * @access  Public
+ */
+router.post("/refresh", validateRefreshToken, refresh);
+
+/**
+ * @route   POST /api/v1/auth/logout
+ * @desc    Logout user
+ * @access  Private
+ */
+router.post("/logout", authenticate, logout);
 
 export default router;
