@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @source "../../../packages/ui/src/**/*.{tsx,ts,jsx,js}";
-@source "../../../packages/auth/src/**/*.{tsx,ts,jsx,js}";
 @source "../../../apps/**/src/**/*.{tsx,ts,jsx,js}";
 
 :root {

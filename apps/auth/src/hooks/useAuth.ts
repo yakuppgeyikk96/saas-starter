@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../lib/api";
-import { API_ENDPOINTS } from "../lib/constants";
+import api from "shell/lib/api";
+import { API_ENDPOINTS } from "shell/lib/constants";
 import { useAuthStore } from "../stores/authStore";
 import {
   ApiResponse,

@@ -97,6 +97,10 @@ export default {
       name: "shell",
       filename: "remoteEntry.js",
       remotes,
+      exposes: {
+        "./lib/api": "./src/lib/api.ts",
+        "./lib/constants": "./src/lib/constants.ts",
+      },
       shared: {
         react: {
           singleton: true,
@@ -126,6 +130,11 @@ export default {
         "@tanstack/react-query": {
           singleton: true,
           requiredVersion: deps["@tanstack/react-query"],
+          eager: false,
+        },
+        axios: {
+          singleton: true,
+          requiredVersion: deps.axios,
           eager: false,
         },
       },

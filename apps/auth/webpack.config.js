@@ -20,8 +20,13 @@ const deps = packageJson.dependencies;
 const isProduction = process.env.NODE_ENV === "production";
 
 const PUBLIC_PATH = process.env.PUBLIC_PATH || "";
+const SHELL_URL = process.env.SHELL_URL || "http://localhost:3000";
 
 const publicPath = isProduction ? PUBLIC_PATH : "http://localhost:3003/";
+
+const remotes = {
+  shell: `shell@${SHELL_URL}/remoteEntry.js`,
+};
 
 export default {
   entry: "./src/index.tsx",
@@ -85,6 +90,7 @@ export default {
     new ModuleFederationPlugin({
       name: "auth",
       filename: "remoteEntry.js",
+      remotes,
       exposes: {
         "./stores": "./src/stores/index.ts",
         "./stores/authStore": "./src/stores/authStore.ts",
@@ -96,8 +102,6 @@ export default {
         "./hooks/useAuth": "./src/hooks/useAuth.ts",
         "./hooks/useRequireAuth": "./src/hooks/useRequireAuth.ts",
         "./lib": "./src/lib/index.ts",
-        "./lib/api": "./src/lib/api.ts",
-        "./lib/constants": "./src/lib/constants.ts",
         "./lib/schemas": "./src/lib/schemas.ts",
         "./types": "./src/types/index.ts",
       },
