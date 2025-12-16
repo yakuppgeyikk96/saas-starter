@@ -72,6 +72,11 @@ export const api: AxiosInstance = axios.create({
 // Request interceptor - Add token to requests
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    // Skip adding token for refresh endpoint
+    if (config.url?.includes("/auth/refresh")) {
+      return config;
+    }
+
     const token = getTokenFromStorage();
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -83,54 +88,83 @@ api.interceptors.request.use(
   }
 );
 
+// Global refresh lock to prevent multiple simultaneous refresh attempts
+let isRefreshing = false;
+let refreshPromise: Promise<{ token: string; refreshToken: string }> | null =
+  null;
+
+// Helper function to refresh token (centralized)
+const refreshAccessToken = async (): Promise<{
+  token: string;
+  refreshToken: string;
+}> => {
+  // If already refreshing, return the existing promise
+  if (isRefreshing && refreshPromise) {
+    return refreshPromise;
+  }
+
+  isRefreshing = true;
+  refreshPromise = (async () => {
+    try {
+      const refreshToken = getRefreshTokenFromStorage();
+      if (!refreshToken) {
+        throw new Error("No refresh token available");
+      }
+
+      const refreshResponse = await axios.post(
+        `${API_BASE_URL}${API_ENDPOINTS.AUTH.REFRESH}`,
+        { refreshToken },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const responseData = refreshResponse.data;
+      if (responseData.success && responseData.data) {
+        const { token: newToken, refreshToken: newRefreshToken } =
+          responseData.data;
+        updateTokensInStorage(newToken, newRefreshToken);
+        return { token: newToken, refreshToken: newRefreshToken };
+      } else {
+        throw new Error("Invalid refresh response");
+      }
+    } catch (error) {
+      clearAuthStorage();
+      throw error;
+    } finally {
+      isRefreshing = false;
+      refreshPromise = null;
+    }
+  })();
+
+  return refreshPromise;
+};
+
+// Export refresh function for use in ProtectedRoute
+export const refreshToken = refreshAccessToken;
+
 // Response interceptor - Handle token refresh, errors, etc.
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
+    // Skip interceptor logic for refresh endpoint
+    if (originalRequest.url?.includes("/auth/refresh")) {
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      if (originalRequest.url?.includes("/auth/refresh")) {
-        clearAuthStorage();
-        if (typeof window !== "undefined") {
-          window.location.href = "/auth/login";
-        }
-        return Promise.reject(error);
-      }
-
       try {
-        const refreshToken = getRefreshTokenFromStorage();
+        const { token: newToken } = await refreshAccessToken();
 
-        if (!refreshToken) {
-          throw new Error("No refresh token available");
-        }
-
-        const refreshResponse = await axios.post(
-          `${API_BASE_URL}${API_ENDPOINTS.AUTH.REFRESH}`,
-          { refreshToken },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        const responseData = refreshResponse.data;
-        if (responseData.success && responseData.data) {
-          const { token: newToken, refreshToken: newRefreshToken } =
-            responseData.data;
-
-          updateTokensInStorage(newToken, newRefreshToken);
-
-          originalRequest.headers.Authorization = `Bearer ${newToken}`;
-          return api(originalRequest);
-        } else {
-          throw new Error("Invalid refresh response");
-        }
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return api(originalRequest);
       } catch (refreshError) {
-        clearAuthStorage();
         if (typeof window !== "undefined") {
           window.location.href = "/auth/login";
         }

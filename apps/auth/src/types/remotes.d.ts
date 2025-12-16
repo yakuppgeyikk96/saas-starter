@@ -2,6 +2,10 @@ declare module "shell/lib/api" {
   import { AxiosInstance } from "axios";
   export const api: AxiosInstance;
   export const configureApi: (baseURL: string) => void;
+  export const refreshToken: () => Promise<{
+    token: string;
+    refreshToken: string;
+  }>;
   const apiClient: AxiosInstance;
   export default apiClient;
 }
