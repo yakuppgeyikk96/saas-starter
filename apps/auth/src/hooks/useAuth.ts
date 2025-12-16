@@ -35,6 +35,7 @@ export const useAuth = () => {
         useAuthStore.setState({
           user: data.data.user,
           token: data.data.token,
+          refreshToken: data.data.refreshToken,
           isAuthenticated: true,
         });
         navigate("/");
@@ -65,6 +66,7 @@ export const useAuth = () => {
         useAuthStore.setState({
           user: data.data.user,
           token: data.data.token,
+          refreshToken: data.data.refreshToken,
           isAuthenticated: true,
         });
         navigate("/");
@@ -84,9 +86,16 @@ export const useAuth = () => {
     error: logoutError,
   } = useMutation({
     mutationFn: async () => {
+      try {
+        await api.post(API_ENDPOINTS.AUTH.LOGOUT);
+      } catch (error) {
+        console.error("Logout API Error:", error);
+        throw error;
+      }
       useAuthStore.setState({
         user: null,
         token: null,
+        refreshToken: null,
         isAuthenticated: false,
       });
     },

@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
+import { API_ENDPOINTS } from "./constants";
 
 let API_BASE_URL = "http://localhost:8080";
 
@@ -25,10 +26,39 @@ const getTokenFromStorage = (): string | null => {
   }
 };
 
+const getRefreshTokenFromStorage = (): string | null => {
+  if (typeof window === "undefined") return null;
+  try {
+    const stored = localStorage.getItem(AUTH_STORAGE_KEY);
+    if (!stored) return null;
+    const parsed = JSON.parse(stored);
+    return parsed.state?.refreshToken || null;
+  } catch {
+    return null;
+  }
+};
+
 // Helper to clear auth storage
 const clearAuthStorage = (): void => {
   if (typeof window === "undefined") return;
   localStorage.removeItem(AUTH_STORAGE_KEY);
+};
+
+const updateTokensInStorage = (token: string, refreshToken: string): void => {
+  if (typeof window === "undefined") return;
+  try {
+    const stored = localStorage.getItem(AUTH_STORAGE_KEY);
+    if (!stored) return;
+    const parsed = JSON.parse(stored);
+    parsed.state = {
+      ...parsed.state,
+      token,
+      refreshToken,
+    };
+    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(parsed));
+  } catch {
+    // Ignore errors
+  }
 };
 
 // Create axios instance
@@ -57,14 +87,57 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401) {
-      // Token expired or invalid - clear auth storage
-      clearAuthStorage();
-      // Optionally redirect to login
-      if (typeof window !== "undefined") {
-        window.location.href = "/auth/login";
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      if (originalRequest.url?.includes("/auth/refresh")) {
+        clearAuthStorage();
+        if (typeof window !== "undefined") {
+          window.location.href = "/auth/login";
+        }
+        return Promise.reject(error);
+      }
+
+      try {
+        const refreshToken = getRefreshTokenFromStorage();
+
+        if (!refreshToken) {
+          throw new Error("No refresh token available");
+        }
+
+        const refreshResponse = await axios.post(
+          `${API_BASE_URL}${API_ENDPOINTS.AUTH.REFRESH}`,
+          { refreshToken },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        const responseData = refreshResponse.data;
+        if (responseData.success && responseData.data) {
+          const { token: newToken, refreshToken: newRefreshToken } =
+            responseData.data;
+
+          updateTokensInStorage(newToken, newRefreshToken);
+
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          return api(originalRequest);
+        } else {
+          throw new Error("Invalid refresh response");
+        }
+      } catch (refreshError) {
+        clearAuthStorage();
+        if (typeof window !== "undefined") {
+          window.location.href = "/auth/login";
+        }
+        return Promise.reject(refreshError);
       }
     }
+
     return Promise.reject(error);
   }
 );
