@@ -1,4 +1,4 @@
-import { UserIcon } from "@repo/ui/icons";
+import ProfileMenu from "../ProfileMenu";
 import ThemeToggler from "./ThemeToggler";
 import ToggleSidebarButton from "./ToggleSidebarButton";
 
@@ -10,13 +10,7 @@ const Navbar = () => {
       </div>
       <div className="flex items-center gap-2">
         <ThemeToggler />
-        <button
-          type="button"
-          className="p-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
-          aria-label="Profile"
-        >
-          <UserIcon className="w-5 h-5 text-foreground" />
-        </button>
+        <ProfileMenu />
       </div>
     </nav>
   );

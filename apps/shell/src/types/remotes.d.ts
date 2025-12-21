@@ -48,3 +48,15 @@ declare module "users/Users" {
   const Users: React.ComponentType;
   export default Users;
 }
+
+declare module "auth/hooks" {
+  export const useAuth: () => {
+    user: User | null;
+    token: string | null;
+    refreshToken: string | null;
+    isAuthenticated: boolean;
+    login: (email: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
+    isLoggingOut: boolean;
+  };
+}

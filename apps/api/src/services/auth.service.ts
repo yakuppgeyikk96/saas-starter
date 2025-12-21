@@ -29,6 +29,7 @@ import { comparePassword, hashPassword } from "../utils/password";
 export const signup = async (dto: SignupDto): Promise<AuthResultDto> => {
   // Check if user already exists
   const exists = await userExists(dto.email);
+
   if (exists) {
     throw new ConflictError("Email already exists");
   }
